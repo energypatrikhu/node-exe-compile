@@ -1,7 +1,7 @@
 # node-exe-compile
-`node-exe-compile` is a small config based wrapper for `@yao-pkg/pkg` (fork of vercel's `pkg` package)
+`node-exe-compile` is a small config based wrapper for [@yao-pkg/pkg](https://github.com/yao-pkg/pkg) (fork of [vercel's pkg](https://github.com/vercel/pkg) package)
 
-it is using `esbuild` to minify and bundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
+it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
 
 # Usage
 1. Install the package
