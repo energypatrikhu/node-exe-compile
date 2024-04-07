@@ -122,7 +122,7 @@ import chalk from 'chalk';
 		const copyTimeStart = performance.now();
 		for (const [filename, { from, to }] of copyMap) {
 			if (extname(filename) !== '') {
-				console.log(`  < ${from}\n  > ${to}\n`);
+				console.log(`  ${from}\n  > ${to}\n`);
 				if (!existsSync(dirname(to))) {
 					mkdirSync(dirname(to), { recursive: true });
 				}
@@ -130,12 +130,16 @@ import chalk from 'chalk';
 			}
 		}
 		console.log(
-			chalk.green(`Done in ${performance.now() - copyTimeStart}ms`),
+			chalk.green(
+				`Done in ${Math.round(performance.now() - copyTimeStart)}ms`,
+			),
 		);
 
 		console.log(
 			chalk.green(
-				`\nBuild finished in ${performance.now() - buildTimeStart}ms\n`,
+				`\nBuild finished in ${Math.round(
+					performance.now() - buildTimeStart,
+				)}ms\n`,
 			),
 		);
 	});

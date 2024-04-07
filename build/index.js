@@ -94,14 +94,14 @@ const chalk_1 = __importDefault(require("chalk"));
         const copyTimeStart = performance.now();
         for (const [filename, { from, to }] of copyMap) {
             if ((0, node_path_1.extname)(filename) !== '') {
-                console.log(`  < ${from}\n  > ${to}\n`);
+                console.log(`  ${from}\n  > ${to}\n`);
                 if (!(0, node_fs_1.existsSync)((0, node_path_1.dirname)(to))) {
                     (0, node_fs_1.mkdirSync)((0, node_path_1.dirname)(to), { recursive: true });
                 }
                 (0, node_fs_1.copyFileSync)(from, to);
             }
         }
-        console.log(chalk_1.default.green(`Done in ${performance.now() - copyTimeStart}ms`));
-        console.log(chalk_1.default.green(`\nBuild finished in ${performance.now() - buildTimeStart}ms\n`));
+        console.log(chalk_1.default.green(`Done in ${Math.round(performance.now() - copyTimeStart)}ms`));
+        console.log(chalk_1.default.green(`\nBuild finished in ${Math.round(performance.now() - buildTimeStart)}ms\n`));
     });
 })();
