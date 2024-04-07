@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_path_1 = require("node:path");
@@ -12,8 +11,6 @@ const esbuild_1 = require("./esbuild");
     const pathToRegex = /%2:\spath-to-executable/;
     const copyMap = new Map();
     const configFile = (0, node_path_1.join)(__root, 'pkg.config.json');
-    // building pkgs
-    console.log('Building pkg(s)...');
     const pkgConfigDefaultEntries = {
         name: 'name',
         main: 'src/index.ts',
@@ -28,9 +25,12 @@ const esbuild_1 = require("./esbuild");
         },
     };
     if (!(0, node_fs_1.existsSync)(configFile)) {
+        console.log('pkg.config.json not found. Creating one...');
         (0, node_fs_1.writeFileSync)(configFile, JSON.stringify(pkgConfigDefaultEntries, null, '\t'), 'utf-8');
+        console.log('pkg.config.json created. Please fill in the required fields.');
         process.exit(0);
     }
+    console.log('Building started...');
     const pkgConfigRaw = (0, node_fs_1.readFileSync)(configFile, 'utf-8');
     const pkgConfig = JSON.parse(pkgConfigRaw);
     // Remove old files
