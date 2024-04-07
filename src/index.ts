@@ -10,8 +10,12 @@ import {
 } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { minify } from './esbuild';
+// @ts-ignore
+import chalk from 'chalk';
 
 (async () => {
+	const buildTimeStart = performance.now();
+
 	const pathFromRegex = /%1:\s/;
 	const pathToRegex = /%2:\spath-to-executable/;
 
@@ -113,18 +117,26 @@ import { minify } from './esbuild';
 
 	pkgProcess.on('exit', async () => {
 		console.log(
-			`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`,
+			`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
 		);
+		const copyTimeStart = performance.now();
 		for (const [filename, { from, to }] of copyMap) {
 			if (extname(filename) !== '') {
-				console.log(`Copying: ${from}\n       > ${to}`);
+				console.log(`  < ${from}\n  > ${to}\n`);
 				if (!existsSync(dirname(to))) {
 					mkdirSync(dirname(to), { recursive: true });
 				}
 				copyFileSync(from, to);
 			}
 		}
+		console.log(
+			chalk.green(`Done in ${performance.now() - copyTimeStart}ms`),
+		);
 
-		console.log('\nBuild finished!\n');
+		console.log(
+			chalk.green(
+				`\nBuild finished in ${performance.now() - buildTimeStart}ms\n`,
+			),
+		);
 	});
 })();

@@ -1,11 +1,17 @@
 #! /usr/bin/env node
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_path_1 = require("node:path");
 const node_fs_1 = require("node:fs");
 const node_child_process_1 = require("node:child_process");
 const esbuild_1 = require("./esbuild");
+// @ts-ignore
+const chalk_1 = __importDefault(require("chalk"));
 (async () => {
+    const buildTimeStart = performance.now();
     const pathFromRegex = /%1:\s/;
     const pathToRegex = /%2:\spath-to-executable/;
     const copyMap = new Map();
@@ -84,16 +90,18 @@ const esbuild_1 = require("./esbuild");
         }
     }
     pkgProcess.on('exit', async () => {
-        console.log(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
+        console.log(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`);
+        const copyTimeStart = performance.now();
         for (const [filename, { from, to }] of copyMap) {
             if ((0, node_path_1.extname)(filename) !== '') {
-                console.log(`Copying: ${from}\n       > ${to}`);
+                console.log(`  < ${from}\n  > ${to}\n`);
                 if (!(0, node_fs_1.existsSync)((0, node_path_1.dirname)(to))) {
                     (0, node_fs_1.mkdirSync)((0, node_path_1.dirname)(to), { recursive: true });
                 }
                 (0, node_fs_1.copyFileSync)(from, to);
             }
         }
-        console.log('\nBuild finished!\n');
+        console.log(chalk_1.default.green(`Done in ${performance.now() - copyTimeStart}ms`));
+        console.log(chalk_1.default.green(`\nBuild finished in ${performance.now() - buildTimeStart}ms\n`));
     });
 })();
