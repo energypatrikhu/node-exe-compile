@@ -12,16 +12,12 @@ import { spawn } from 'node:child_process';
 import { minify } from './esbuild';
 
 (async () => {
-	const __root = join(require.main?.path || process.cwd());
-
 	const pathFromRegex = /%1:\s/;
 	const pathToRegex = /%2:\spath-to-executable/;
 
 	const copyMap = new Map<string, { from: string; to: string }>();
 
 	const configFile = 'pkg.config.json';
-
-	console.log({ __root, configFile });
 
 	const pkgConfigDefaultEntries = {
 		name: 'name',
@@ -57,11 +53,9 @@ import { minify } from './esbuild';
 
 	// Remove old files
 	console.log('Removing old files...');
-	const pkgFolderContents = readdirSync(
-		join(__root, pkgConfig.pkg.outputPath),
-	);
+	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
 	for (const file of pkgFolderContents) {
-		rmSync(join(__root, pkgConfig.pkg.outputPath, file), {
+		rmSync(join(pkgConfig.pkg.outputPath, file), {
 			recursive: true,
 			force: true,
 		});
@@ -83,7 +77,7 @@ import { minify } from './esbuild';
 	console.log('Compiling executable...');
 	const pkgProcess = spawn('cmd', [
 		'/r',
-		join(__root, 'node_modules', '.bin', 'pkg'),
+		join('node_modules', '.bin', 'pkg'),
 		configFile,
 		'--compress',
 		compress,
@@ -94,12 +88,10 @@ import { minify } from './esbuild';
 
 		for (const line of lines) {
 			if (line.match(pathFromRegex)) {
-				const from =
-					__root +
-					line
-						.replace(pathFromRegex, '')
-						.replace(/\\/g, '\\\\')
-						.trim();
+				const from = line
+					.replace(pathFromRegex, '')
+					.replace(/\\/g, '\\\\')
+					.trim();
 
 				copyMap.set(basename(from), { from, to: '' });
 			} else if (line.match(pathToRegex)) {
