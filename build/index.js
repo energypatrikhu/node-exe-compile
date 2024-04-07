@@ -29,14 +29,14 @@ const esbuild_1 = require("./esbuild");
         console.log('pkg.config.json created. Please fill in the required fields.');
         process.exit(0);
     }
-    console.log('Building started!');
+    console.log('\nBuild started!\n');
     const pkgConfigRaw = (0, node_fs_1.readFileSync)(configFile, 'utf-8');
     const pkgConfig = JSON.parse(pkgConfigRaw);
     if (!(0, node_fs_1.existsSync)(pkgConfig.pkg.outputPath)) {
         (0, node_fs_1.mkdirSync)(pkgConfig.pkg.outputPath, { recursive: true });
     }
     // Remove old files
-    console.log('Removing old files...');
+    console.log('Removing old files...\n');
     const pkgFolderContents = (0, node_fs_1.readdirSync)(pkgConfig.pkg.outputPath);
     for (const file of pkgFolderContents) {
         (0, node_fs_1.rmSync)((0, node_path_1.join)(pkgConfig.pkg.outputPath, file), {
@@ -55,7 +55,7 @@ const esbuild_1 = require("./esbuild");
         compress: 'brotli',
     };
     const compress = additional.compress || 'brotli';
-    console.log('Compiling executable...');
+    console.log('\nCompiling executable...\n');
     const pkgProcess = (0, node_child_process_1.spawn)('cmd', [
         '/r',
         (0, node_path_1.join)('node_modules', '.bin', 'pkg'),
@@ -84,7 +84,7 @@ const esbuild_1 = require("./esbuild");
         }
     }
     pkgProcess.on('exit', async () => {
-        console.log('Copying needed files into pkg directory...');
+        console.log(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
         for (const [filename, { from, to }] of copyMap) {
             if ((0, node_path_1.extname)(filename) !== '') {
                 console.log(`Copying: ${from}\n       > ${to}`);
@@ -94,6 +94,6 @@ const esbuild_1 = require("./esbuild");
                 (0, node_fs_1.copyFileSync)(from, to);
             }
         }
-        console.log('Building finished!');
+        console.log('\nBuild finished!\n');
     });
 })();

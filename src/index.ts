@@ -47,7 +47,7 @@ import { minify } from './esbuild';
 		process.exit(0);
 	}
 
-	console.log('Building started!');
+	console.log('\nBuild started!\n');
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
 	const pkgConfig = JSON.parse(pkgConfigRaw);
 
@@ -56,7 +56,7 @@ import { minify } from './esbuild';
 	}
 
 	// Remove old files
-	console.log('Removing old files...');
+	console.log('Removing old files...\n');
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
 	for (const file of pkgFolderContents) {
 		rmSync(join(pkgConfig.pkg.outputPath, file), {
@@ -78,7 +78,7 @@ import { minify } from './esbuild';
 	};
 	const compress = additional.compress || 'brotli';
 
-	console.log('Compiling executable...');
+	console.log('\nCompiling executable...\n');
 	const pkgProcess = spawn('cmd', [
 		'/r',
 		join('node_modules', '.bin', 'pkg'),
@@ -112,7 +112,9 @@ import { minify } from './esbuild';
 	}
 
 	pkgProcess.on('exit', async () => {
-		console.log('Copying needed files into pkg directory...');
+		console.log(
+			`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`,
+		);
 		for (const [filename, { from, to }] of copyMap) {
 			if (extname(filename) !== '') {
 				console.log(`Copying: ${from}\n       > ${to}`);
@@ -123,6 +125,6 @@ import { minify } from './esbuild';
 			}
 		}
 
-		console.log('Building finished!');
+		console.log('\nBuild finished!\n');
 	});
 })();
