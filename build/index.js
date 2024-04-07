@@ -60,15 +60,15 @@ const chalk_1 = __importDefault(require("chalk"));
     const additional = pkgConfig.pkg.additional || {
         compress: 'brotli',
     };
-    const compress = additional.compress || 'brotli';
+    const pkgArgs = ['/r', (0, node_path_1.join)('node_modules', '.bin', 'pkg'), configFile];
+    for (let [optionKey, optionValue] of Object.entries(additional)) {
+        if (Array.isArray(optionValue)) {
+            optionValue = optionValue.join(' ');
+        }
+        pkgArgs.push(`--${optionKey}`, optionValue);
+    }
     console.log('\nCompiling executable...\n');
-    const pkgProcess = (0, node_child_process_1.spawn)('cmd', [
-        '/r',
-        (0, node_path_1.join)('node_modules', '.bin', 'pkg'),
-        configFile,
-        '--compress',
-        compress,
-    ]);
+    const pkgProcess = (0, node_child_process_1.spawn)('cmd', pkgArgs);
     for await (const text of pkgProcess.stdout) {
         const lines = text.toString().split('\n');
         for (const line of lines) {

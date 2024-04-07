@@ -13,6 +13,20 @@ import { minify } from './esbuild';
 // @ts-ignore
 import chalk from 'chalk';
 
+interface PkgConfig {
+	name: string;
+	main: string;
+	bin: string;
+	pkg: {
+		targets: Array<string>;
+		assets: Array<string>;
+		outputPath: string;
+		additional: {
+			[key: string]: string | Array<string>;
+		};
+	};
+}
+
 (async () => {
 	const buildTimeStart = performance.now();
 
@@ -23,7 +37,7 @@ import chalk from 'chalk';
 
 	const configFile = 'pkg.config.json';
 
-	const pkgConfigDefaultEntries = {
+	const pkgConfigDefaultEntries: PkgConfig = {
 		name: 'name',
 		main: 'src/index.ts',
 		bin: 'build/index.js',
@@ -53,7 +67,7 @@ import chalk from 'chalk';
 
 	console.log('\nBuild started!\n');
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
-	const pkgConfig = JSON.parse(pkgConfigRaw);
+	const pkgConfig: PkgConfig = JSON.parse(pkgConfigRaw);
 
 	if (!existsSync(pkgConfig.pkg.outputPath)) {
 		mkdirSync(pkgConfig.pkg.outputPath, { recursive: true });
@@ -80,16 +94,19 @@ import chalk from 'chalk';
 	const additional = pkgConfig.pkg.additional || {
 		compress: 'brotli',
 	};
-	const compress = additional.compress || 'brotli';
+
+	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
+
+	for (let [optionKey, optionValue] of Object.entries(additional)) {
+		if (Array.isArray(optionValue)) {
+			optionValue = optionValue.join(' ');
+		}
+
+		pkgArgs.push(`--${optionKey}`, optionValue);
+	}
 
 	console.log('\nCompiling executable...\n');
-	const pkgProcess = spawn('cmd', [
-		'/r',
-		join('node_modules', '.bin', 'pkg'),
-		configFile,
-		'--compress',
-		compress,
-	]);
+	const pkgProcess = spawn('cmd', pkgArgs);
 
 	for await (const text of pkgProcess.stdout) {
 		const lines: Array<string> = text.toString().split('\n');
