@@ -1,7 +1,7 @@
 # node-exe-compile
 `node-exe-compile` is a small config based wrapper for `@yao-pkg/pkg` (fork of vercel's `pkg` package)
 
-it is using `esbuild` to minify and boundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
+it is using `esbuild` to minify and bundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
 
 # Usage
 1. Install the package
@@ -25,7 +25,7 @@ it is using `esbuild` to minify and boundle the script specified in the config f
 The generated configuration file is almost identical to the default configuration file needed for the `pkg` package, with a few additions
 - `name`: the name of the file after compiling
 - `main`: this is the location of the main file, commonly `src/index.[ts,js]`
-- `bin`: the path to the minified and boundled script (this most of the times does not need to be changed)
+- `bin`: the path to the minified and bundled script (this most of the times does not need to be changed)
 - `pkg`: pkg options
   - `targets`: NodeJS version (latest == node20)
   - `assets`: when using packages that has `.node` extension the value has to be set, otherwise it may fail to start
