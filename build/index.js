@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_path_1 = require("node:path");
@@ -6,10 +7,11 @@ const node_fs_1 = require("node:fs");
 const node_child_process_1 = require("node:child_process");
 const esbuild_1 = require("./esbuild");
 (async () => {
+    const __root = (0, node_path_1.join)(require.main?.path || process.cwd());
     const pathFromRegex = /%1:\s/;
     const pathToRegex = /%2:\spath-to-executable/;
     const copyMap = new Map();
-    const configFile = `pkg.config.json`;
+    const configFile = (0, node_path_1.join)(__root, 'pkg.config.json');
     // building pkgs
     console.log('Building pkg(s)...');
     const pkgConfigDefaultEntries = {
@@ -33,9 +35,9 @@ const esbuild_1 = require("./esbuild");
     const pkgConfig = JSON.parse(pkgConfigRaw);
     // Remove old files
     console.log('Removing old files...');
-    const pkgFolderContents = (0, node_fs_1.readdirSync)(pkgConfig.pkg.outputPath);
+    const pkgFolderContents = (0, node_fs_1.readdirSync)((0, node_path_1.join)(__root, pkgConfig.pkg.outputPath));
     for (const file of pkgFolderContents) {
-        (0, node_fs_1.rmSync)((0, node_path_1.join)(pkgConfig.pkg.outputPath, file), {
+        (0, node_fs_1.rmSync)((0, node_path_1.join)(__root, pkgConfig.pkg.outputPath, file), {
             recursive: true,
             force: true,
         });
@@ -54,7 +56,7 @@ const esbuild_1 = require("./esbuild");
     console.log('Compiling executable...');
     const pkgProcess = (0, node_child_process_1.spawn)('cmd', [
         '/r',
-        'node_modules\\.bin\\pkg',
+        (0, node_path_1.join)(__root, 'node_modules', '.bin', 'pkg'),
         configFile,
         '--compress',
         compress,
@@ -63,14 +65,15 @@ const esbuild_1 = require("./esbuild");
         const lines = text.toString().split('\n');
         for (const line of lines) {
             if (line.match(pathFromRegex)) {
-                const from = line
-                    .replace(pathFromRegex, '')
-                    .replace(/\\/g, '\\\\')
-                    .trim();
+                const from = __root +
+                    line
+                        .replace(pathFromRegex, '')
+                        .replace(/\\/g, '\\\\')
+                        .trim();
                 copyMap.set((0, node_path_1.basename)(from), { from, to: '' });
             }
             else if (line.match(pathToRegex)) {
-                const to = 'pkg' +
+                const to = pkgConfig.pkg.outputPath +
                     line.replace(pathToRegex, '').replace(/\//g, '\\\\').trim();
                 copyMap.set((0, node_path_1.basename)(to), {
                     from: copyMap.get((0, node_path_1.basename)(to))?.from || '',
