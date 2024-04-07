@@ -1,0 +1,22 @@
+{
+	"name": "node-exe-compile",
+	"version": "0.0.1",
+	"description": "",
+	"main": "build/index.js",
+	"bin": {
+		"node-exe-compile": "build/index.js"
+	},
+	"scripts": {
+		"build": "tsc"
+	},
+	"author": "EnergyPatrikHU",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/node": "^20.12.5",
+		"typescript": "^5.4.4"
+	},
+	"dependencies": {
+		"@yao-pkg/pkg": "^5.11.5",
+		"esbuild": "^0.20.2"
+	}
+}
