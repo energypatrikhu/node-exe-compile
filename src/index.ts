@@ -47,7 +47,7 @@ import { minify } from './esbuild';
 		process.exit(0);
 	}
 
-	console.log('Building started...');
+	console.log('Building started!');
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
 	const pkgConfig = JSON.parse(pkgConfigRaw);
 
@@ -65,8 +65,8 @@ import { minify } from './esbuild';
 		});
 	}
 
-	// Minify script(s)
-	console.log('Minifying script(s)...');
+	// Minify files
+	console.log('Minifying files...');
 	const main = pkgConfig.main || 'src/index.ts';
 	const bin = pkgConfig.bin || 'build/index.js';
 	const binPath = dirname(bin);
@@ -122,5 +122,7 @@ import { minify } from './esbuild';
 				copyFileSync(from, to);
 			}
 		}
+
+		console.log('Building finished!');
 	});
 })();

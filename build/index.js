@@ -29,7 +29,7 @@ const esbuild_1 = require("./esbuild");
         console.log('pkg.config.json created. Please fill in the required fields.');
         process.exit(0);
     }
-    console.log('Building started...');
+    console.log('Building started!');
     const pkgConfigRaw = (0, node_fs_1.readFileSync)(configFile, 'utf-8');
     const pkgConfig = JSON.parse(pkgConfigRaw);
     if (!(0, node_fs_1.existsSync)(pkgConfig.pkg.outputPath)) {
@@ -44,8 +44,8 @@ const esbuild_1 = require("./esbuild");
             force: true,
         });
     }
-    // Minify script(s)
-    console.log('Minifying script(s)...');
+    // Minify files
+    console.log('Minifying files...');
     const main = pkgConfig.main || 'src/index.ts';
     const bin = pkgConfig.bin || 'build/index.js';
     const binPath = (0, node_path_1.dirname)(bin);
@@ -94,5 +94,6 @@ const esbuild_1 = require("./esbuild");
                 (0, node_fs_1.copyFileSync)(from, to);
             }
         }
+        console.log('Building finished!');
     });
 })();
