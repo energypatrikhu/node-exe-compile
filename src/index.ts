@@ -13,12 +13,15 @@ import { minify } from './esbuild';
 
 (async () => {
 	const __root = join(require.main?.path || process.cwd());
+
 	const pathFromRegex = /%1:\s/;
 	const pathToRegex = /%2:\spath-to-executable/;
 
 	const copyMap = new Map<string, { from: string; to: string }>();
 
 	const configFile = join(__root, 'pkg.config.json');
+
+	console.log({ __root, configFile });
 
 	const pkgConfigDefaultEntries = {
 		name: 'name',
