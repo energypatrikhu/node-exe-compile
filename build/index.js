@@ -10,7 +10,7 @@ const esbuild_1 = require("./esbuild");
     const pathFromRegex = /%1:\s/;
     const pathToRegex = /%2:\spath-to-executable/;
     const copyMap = new Map();
-    const configFile = (0, node_path_1.join)(__root, 'pkg.config.json');
+    const configFile = 'pkg.config.json';
     console.log({ __root, configFile });
     const pkgConfigDefaultEntries = {
         name: 'name',

@@ -19,7 +19,7 @@ import { minify } from './esbuild';
 
 	const copyMap = new Map<string, { from: string; to: string }>();
 
-	const configFile = join(__root, 'pkg.config.json');
+	const configFile = 'pkg.config.json';
 
 	console.log({ __root, configFile });
 
