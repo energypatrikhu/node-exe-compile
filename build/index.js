@@ -63,7 +63,7 @@ const chalk_1 = __importDefault(require("chalk"));
     const pkgArgs = ['/r', (0, node_path_1.join)('node_modules', '.bin', 'pkg'), configFile];
     for (let [optionKey, optionValue] of Object.entries(additional)) {
         if (Array.isArray(optionValue)) {
-            optionValue = optionValue.join(' ');
+            optionValue = optionValue.join(',');
         }
         pkgArgs.push(`--${optionKey}`, optionValue);
     }

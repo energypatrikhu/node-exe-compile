@@ -99,7 +99,7 @@ interface PkgConfig {
 
 	for (let [optionKey, optionValue] of Object.entries(additional)) {
 		if (Array.isArray(optionValue)) {
-			optionValue = optionValue.join(' ');
+			optionValue = optionValue.join(',');
 		}
 
 		pkgArgs.push(`--${optionKey}`, optionValue);
