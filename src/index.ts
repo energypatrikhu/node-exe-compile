@@ -51,6 +51,10 @@ import { minify } from './esbuild';
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
 	const pkgConfig = JSON.parse(pkgConfigRaw);
 
+	if (!existsSync(pkgConfig.pkg.outputPath)) {
+		mkdirSync(pkgConfig.pkg.outputPath, { recursive: true });
+	}
+
 	// Remove old files
 	console.log('Removing old files...');
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);

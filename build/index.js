@@ -32,6 +32,9 @@ const esbuild_1 = require("./esbuild");
     console.log('Building started...');
     const pkgConfigRaw = (0, node_fs_1.readFileSync)(configFile, 'utf-8');
     const pkgConfig = JSON.parse(pkgConfigRaw);
+    if (!(0, node_fs_1.existsSync)(pkgConfig.pkg.outputPath)) {
+        (0, node_fs_1.mkdirSync)(pkgConfig.pkg.outputPath, { recursive: true });
+    }
     // Remove old files
     console.log('Removing old files...');
     const pkgFolderContents = (0, node_fs_1.readdirSync)(pkgConfig.pkg.outputPath);
