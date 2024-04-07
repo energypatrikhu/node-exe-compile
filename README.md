@@ -8,7 +8,7 @@ it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the
     ```
     npm install -D energypatrikhu/node-exe-compile
     ```
-  
+
 2. Start `node-exe-compile` to generate the configuration file
     > this creates an example configuration file, that later can be modified to set the compiled name and others..
     ```
@@ -30,5 +30,6 @@ The generated configuration file is almost identical to the default configuratio
   - `targets`: NodeJS version (latest == node20)
   - `assets`: when using packages that has `.node` extension the value has to be set, otherwise it may fail to start
   - `outputPath`: the path where the executable will be built
-  - `additional`: this contains the additional settings for `pkg` (currently only supports the `compress` option)
+  - `additional`: this contains the additional settings for `pkg`
     - `compress`: the compression used at complile time
+    - ...
