@@ -1,24 +1,24 @@
-# node-exe-compile
-`node-exe-compile` is a small config based wrapper for [@yao-pkg/pkg](https://github.com/yao-pkg/pkg) (fork of [vercel's pkg](https://github.com/vercel/pkg) package)
+# node-exe-compiler
+`node-exe-compiler` is a small config based wrapper for [@yao-pkg/pkg](https://github.com/yao-pkg/pkg) (fork of [vercel's pkg](https://github.com/vercel/pkg) package)
 
 it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
 
 # Usage
 1. Install the package
     ```
-    npm install -D energypatrikhu/node-exe-compile
+    npm install -D energypatrikhu/node-exe-compiler
     ```
 
-2. Start `node-exe-compile` to generate the configuration file
+2. Start `node-exe-compiler` to generate the configuration file
     > this creates an example configuration file, that later can be modified to set the compiled name and others..
     ```
-    node-exe-compile
+    node-exe-compiler
     ```
 
-3. After that is done, you have to start `node-exe-compile` again
+3. After that is done, you have to start `node-exe-compiler` again
     > now the script minifies and then compiles the given script to an executable
     ```
-    node-exe-compile
+    node-exe-compiler
     ```
 
 # Configuration
