@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"build": "del build\\* && tsc && node prefix.mjs",
-		"publish": "np --no-tests"
+		"np": "np --no-tests"
 	},
 	"files": [
 		"build"
