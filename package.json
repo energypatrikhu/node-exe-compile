@@ -7,7 +7,7 @@
 		"node-exe-compile": "build/index.js"
 	},
 	"scripts": {
-		"build": "del build\\* && tsc",
+		"build": "del build\\* && tsc && node prefix.mjs",
 		"publish": "np --no-tests"
 	},
 	"files": [
