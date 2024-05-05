@@ -10,8 +10,7 @@ import {
 } from 'node:fs';
 import { spawn } from 'node:child_process';
 import { minify } from './esbuild';
-// @ts-ignore
-import chalk from 'chalk';
+import picocolors from 'picocolors';
 
 interface PkgConfig {
 	name: string;
@@ -147,13 +146,13 @@ interface PkgConfig {
 			}
 		}
 		console.log(
-			chalk.green(
+			picocolors.green(
 				`Done in ${Math.round(performance.now() - copyTimeStart)}ms`,
 			),
 		);
 
 		console.log(
-			chalk.green(
+			picocolors.green(
 				`\nBuild finished in ${Math.round(
 					performance.now() - buildTimeStart,
 				)}ms\n`,
