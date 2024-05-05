@@ -1,23 +1,39 @@
 {
 	"name": "node-exe-compile",
-	"version": "0.0.1",
+	"version": "0.0.0",
 	"description": "",
 	"main": "build/index.js",
 	"bin": {
 		"node-exe-compile": "build/index.js"
 	},
 	"scripts": {
-		"build": "tsc"
+		"build": "rm -rf build/* && tsc",
+		"publish": "np --no-tests"
 	},
+	"files": [
+		"build"
+	],
 	"author": "EnergyPatrikHU",
-	"license": "ISC",
 	"devDependencies": {
 		"@types/node": "^20.12.5",
 		"chalk": "^5.3.0",
+		"np": "^10.0.5",
 		"typescript": "^5.4.4"
 	},
 	"dependencies": {
 		"@yao-pkg/pkg": "^5.11.5",
 		"esbuild": "^0.20.2"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/energypatrikhu/node-exe-compile.git"
+	},
+	"bugs": {
+		"url": "https://github.com/energypatrikhu/node-exe-compile/issues"
+	},
+	"homepage": "https://github.com/energypatrikhu/node-exe-compile",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
 	}
 }
