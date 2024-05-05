@@ -8,8 +8,7 @@ const node_path_1 = require("node:path");
 const node_fs_1 = require("node:fs");
 const node_child_process_1 = require("node:child_process");
 const esbuild_1 = require("./esbuild");
-// @ts-ignore
-const chalk_1 = __importDefault(require("chalk"));
+const picocolors_1 = __importDefault(require("picocolors"));
 (async () => {
     const buildTimeStart = performance.now();
     const pathFromRegex = /%1:\s/;
@@ -101,7 +100,7 @@ const chalk_1 = __importDefault(require("chalk"));
                 (0, node_fs_1.copyFileSync)(from, to);
             }
         }
-        console.log(chalk_1.default.green(`Done in ${Math.round(performance.now() - copyTimeStart)}ms`));
-        console.log(chalk_1.default.green(`\nBuild finished in ${Math.round(performance.now() - buildTimeStart)}ms\n`));
+        console.log(picocolors_1.default.green(`Done in ${Math.round(performance.now() - copyTimeStart)}ms`));
+        console.log(picocolors_1.default.green(`\nBuild finished in ${Math.round(performance.now() - buildTimeStart)}ms\n`));
     });
 })();
