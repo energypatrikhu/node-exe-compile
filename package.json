@@ -25,12 +25,12 @@
 	"author": "EnergyPatrikHU",
 	"devDependencies": {
 		"@types/node": "^20.12.5",
-		"chalk": "^5.3.0",
 		"np": "^10.0.5",
 		"typescript": "^5.4.4"
 	},
 	"dependencies": {
 		"@yao-pkg/pkg": "^5.11.5",
+		"chalk": "^5.3.0",
 		"esbuild": "^0.20.2"
 	},
 	"repository": {
