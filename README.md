@@ -6,19 +6,19 @@ it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the
 # Usage
 1. Install the package
     ```
-    npm install -D energypatrikhu/node-exe-compile
+    npm install -D @energypatrikhu/node-exe-compile
     ```
 
 2. Start `node-exe-compile` to generate the configuration file
     > this creates an example configuration file, that later can be modified to set the compiled name and others..
     ```
-    node-exe-compile
+    @energypatrikhu/node-exe-compile
     ```
 
 3. After that is done, you have to start `node-exe-compile` again
     > now the script minifies and then compiles the given script to an executable
     ```
-    node-exe-compile
+    @energypatrikhu/node-exe-compile
     ```
 
 # Configuration
