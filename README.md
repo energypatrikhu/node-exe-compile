@@ -5,21 +5,30 @@ it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the
 
 # Usage
 1. Install the package
-    ```
-    npm install -D @energypatrikhu/node-exe-compile
-    ```
+  ```
+  npm install -D @energypatrikhu/node-exe-compile
+  ```
 
-2. Start `node-exe-compile` to generate the configuration file
-    > this creates an example configuration file, that later can be modified to set the compiled name and others..
-    ```
-    @energypatrikhu/node-exe-compile
-    ```
+2. Add the following scripts to your `package.json`
+  ```json
+  {
+    "scripts": {
+      "compile": "node-exe-compile"
+    }
+  }
+  ```
 
-3. After that is done, you have to start `node-exe-compile` again
-    > now the script minifies and then compiles the given script to an executable
-    ```
-    @energypatrikhu/node-exe-compile
-    ```
+3. Start the script
+  > this creates an example configuration file, that later can be modified to set the compiled name and others..
+  ```
+  npm run compile
+  ```
+
+4. After that is done, you have to start `node-exe-compile` again
+  > now the script minifies and then compiles the given script to an executable
+  ```
+  npm run compile
+  ```
 
 # Configuration
 The generated configuration file is almost identical to the default configuration file needed for the `pkg` package, with a few additions
