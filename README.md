@@ -3,6 +3,10 @@
 
 it is using [esbuild](https://github.com/evanw/esbuild) to minify and bundle the script specified in the config file, then using `pkg` it compiles to an `exe` file
 
+# Warning
+This package is not well tested, and may not work as expected, use at your own risk,
+the package was only tested on Windows, and may not work on other platforms
+
 # Usage
 1. Install the package
   ```
