@@ -9,7 +9,7 @@ import {
 	writeFileSync,
 } from 'node:fs';
 import { spawn } from 'node:child_process';
-import minify from './esbuild';
+import esbuildMinify from './esbuild';
 import picocolors from 'picocolors';
 
 interface PkgConfig {
@@ -89,7 +89,7 @@ interface PkgConfig {
 	const bin = pkgConfig.bin || 'build/index.js';
 	console.log(`Minifying '${main}' into '${bin}'...`);
 	const binPath = dirname(bin);
-	await minify(main, binPath);
+	await esbuildMinify(main, binPath);
 
 	// Compile executable
 	const additional = pkgConfig.pkg.additional || {
