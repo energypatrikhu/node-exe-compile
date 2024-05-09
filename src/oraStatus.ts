@@ -5,11 +5,13 @@ function oraTime(time: number) {
 	if (time < 1000) {
 		return `${Math.round(time)}ms`;
 	} else if (time < 60 * 1000) {
-		return secToTime(time, '{ss}s');
+		return secToTime(time, '{SS}s');
 	} else if (time < 60 * 60 * 1000) {
-		return secToTime(time, '{mm}m {ss}s');
+		return secToTime(time, '{MM}m {SS}s');
+	} else if (time < 24 * 60 * 60 * 1000) {
+		return secToTime(time, '{HH}h {MM}m {SS}s');
 	}
-	return secToTime(time, '{HH}h {mm}m {ss}s');
+	return secToTime(time, '{DD}d {HH}h {MM}m {SS}s');
 }
 
 export default function oraStatus(text: string) {
@@ -23,9 +25,7 @@ export default function oraStatus(text: string) {
 			);
 		},
 		fail: (text: string) => {
-			spinner.fail(
-				`${text} in ${oraTime(performance.now() - performanceNow)}`,
-			);
+			spinner.fail(text);
 		},
 		info: (text: string) => {
 			spinner.info(
@@ -33,9 +33,7 @@ export default function oraStatus(text: string) {
 			);
 		},
 		warn: (text: string) => {
-			spinner.warn(
-				`${text} in ${oraTime(performance.now() - performanceNow)}`,
-			);
+			spinner.warn(text);
 		},
 	};
 }
