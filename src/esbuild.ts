@@ -12,7 +12,7 @@ export default async function esbuildMinify(
 		bundle: true,
 		platform: 'node',
 		outdir: destination,
-		logLevel: 'debug',
+		logLevel: 'silent',
 		minify: true,
 		format: 'cjs',
 		external: [
