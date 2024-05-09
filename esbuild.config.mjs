@@ -31,7 +31,7 @@ try {
 		outfile: __destinationFile,
 		logLevel: 'silent',
 		minify: true,
-		format: 'cjs',
+		format: 'esm',
 		external: [
 			...Object.keys(packageJson.optionalDependencies || {}),
 			...Object.keys(packageJson.bundledDependencies || {}),
