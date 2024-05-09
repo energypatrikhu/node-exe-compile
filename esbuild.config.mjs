@@ -16,11 +16,7 @@ function oraStatus(text) {
 			);
 		},
 		fail: (text) => {
-			spinner.fail(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
-			);
+			spinner.fail(text);
 		},
 	};
 }
@@ -36,7 +32,7 @@ try {
 	}
 	ora__removeOldFiles.succeed('Removed old files');
 } catch {
-	ora__removeOldFiles.failed('Failed to remove old files');
+	ora__removeOldFiles.fail('Failed to remove old files');
 }
 
 const ora__building = oraStatus('Building package...');
@@ -48,6 +44,7 @@ try {
 		bundle: true,
 		outfile: __destinationFile,
 		logLevel: 'silent',
+		treeShaking: true,
 		minify: true,
 		format: 'cjs',
 		external: [
@@ -60,7 +57,7 @@ try {
 	});
 	ora__building.succeed('Built package');
 } catch {
-	ora__building.failed('Failed to build package');
+	ora__building.fail('Failed to build package');
 }
 
 const ora__addingShebang = oraStatus('Adding shebang...');
@@ -72,5 +69,5 @@ try {
 	);
 	ora__addingShebang.succeed('Added shebang');
 } catch {
-	ora__addingShebang.failed('Failed to add shebang');
+	ora__addingShebang.fail('Failed to add shebang');
 }
