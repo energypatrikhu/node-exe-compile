@@ -5,13 +5,13 @@ function oraTime(time: number) {
 	if (time < 1000) {
 		return `${Math.round(time)}ms`;
 	} else if (time < 60 * 1000) {
-		return secToTime(time, '{SS}s');
+		return secToTime(time / 1000, '{SS}s');
 	} else if (time < 60 * 60 * 1000) {
-		return secToTime(time, '{MM}m {SS}s');
+		return secToTime(time / 1000, '{MM}m {SS}s');
 	} else if (time < 24 * 60 * 60 * 1000) {
-		return secToTime(time, '{HH}h {MM}m {SS}s');
+		return secToTime(time / 1000, '{HH}h {MM}m {SS}s');
 	}
-	return secToTime(time, '{DD}d {HH}h {MM}m {SS}s');
+	return secToTime(time / 1000, '{DD}d {HH}h {MM}m {SS}s');
 }
 
 export default function oraStatus(text: string) {
