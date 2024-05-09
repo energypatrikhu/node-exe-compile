@@ -58,7 +58,7 @@ import oraStatus from './oraStatus';
 	}
 
 	// Remove old files from pkg folder
-	const ora_removeOldFiles = oraStatus(
+	const status_removeOldFiles = oraStatus(
 		"Removing old files from 'pkg' folder...",
 	);
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
@@ -68,15 +68,15 @@ import oraStatus from './oraStatus';
 			force: true,
 		});
 	}
-	ora_removeOldFiles.succeed("Old files removed from 'pkg' folder.");
+	status_removeOldFiles.succeed("Old files removed from 'pkg' folder.");
 
 	// Minify file main file
 	const main = pkgConfig.main || 'src/index.ts';
 	const bin = pkgConfig.bin || 'build/index.js';
 	const binPath = dirname(bin);
-	const ora_minifying = oraStatus(`Minifying '${main}' into '${bin}'...`);
+	const status_minifying = oraStatus(`Minifying '${main}' into '${bin}'...`);
 	await esbuildMinify(main, binPath);
-	ora_minifying.succeed(`Minified '${main}' into '${bin}'`);
+	status_minifying.succeed(`Minified '${main}' into '${bin}'`);
 
 	// Compile executable
 	const additional =
@@ -92,7 +92,7 @@ import oraStatus from './oraStatus';
 		pkgArgs.push(`--${optionKey}`, optionValue);
 	}
 
-	const ora_compiling = oraStatus(
+	const status_compiling = oraStatus(
 		`Compiling '${pkgConfig.bin}', scripts and assets into executable...`,
 	);
 	const pkgProcess = spawn('cmd', pkgArgs);
@@ -122,7 +122,7 @@ import oraStatus from './oraStatus';
 	});
 
 	pkgProcess.on('exit', async () => {
-		ora_compiling.succeed(
+		status_compiling.succeed(
 			`Compiled '${pkgConfig.bin}', scripts and assets into executable`,
 		);
 
@@ -130,7 +130,7 @@ import oraStatus from './oraStatus';
 			([filename]) => extname(filename) !== '',
 		);
 		if (copyMapEntries.length > 0) {
-			const ora_copying = oraStatus(
+			const status_copying = oraStatus(
 				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`,
 			);
 
@@ -142,7 +142,7 @@ import oraStatus from './oraStatus';
 				copyFileSync(from, to);
 			}
 
-			ora_copying.succeed(
+			status_copying.succeed(
 				`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`,
 			);
 		}
