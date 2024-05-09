@@ -10,12 +10,10 @@ import {
 } from 'node:fs';
 import { spawn } from 'node:child_process';
 import esbuildMinify from './esbuild';
-import picocolors from 'picocolors';
 import type { PkgConfig } from './_types/Pkg';
+import oraStatus from './oraStatus';
 
 (async () => {
-	const buildTimeStart = performance.now();
-
 	const pathFromRegex = /%1:\s/;
 	const pathToRegex = /%2:\spath-to-executable/;
 
@@ -52,7 +50,6 @@ import type { PkgConfig } from './_types/Pkg';
 		process.exit(0);
 	}
 
-	console.log('\nBuild started!\n');
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
 	const pkgConfig: PkgConfig = JSON.parse(pkgConfigRaw);
 
@@ -61,7 +58,9 @@ import type { PkgConfig } from './_types/Pkg';
 	}
 
 	// Remove old files from pkg folder
-	console.log(`Removing old files from 'pkg' folder...\n`);
+	const ora_removeOldFiles = oraStatus(
+		"Removing old files from 'pkg' folder...",
+	);
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
 	for (const file of pkgFolderContents) {
 		rmSync(join(pkgConfig.pkg.outputPath, file), {
@@ -69,13 +68,15 @@ import type { PkgConfig } from './_types/Pkg';
 			force: true,
 		});
 	}
+	ora_removeOldFiles.succeed("Old files removed from 'pkg' folder.");
 
 	// Minify file main file
 	const main = pkgConfig.main || 'src/index.ts';
 	const bin = pkgConfig.bin || 'build/index.js';
-	console.log(`Minifying '${main}' into '${bin}'...`);
 	const binPath = dirname(bin);
+	const ora_minifying = oraStatus(`Minifying '${main}' into '${bin}'...`);
 	await esbuildMinify(main, binPath);
+	ora_minifying.succeed(`Minified '${main}' into '${bin}'`);
 
 	// Compile executable
 	const additional =
@@ -91,10 +92,9 @@ import type { PkgConfig } from './_types/Pkg';
 		pkgArgs.push(`--${optionKey}`, optionValue);
 	}
 
-	console.log(
-		`\nCompiling '${pkgConfig.bin}', scripts and assets into executable...\n`,
+	const ora_compiling = oraStatus(
+		`Compiling '${pkgConfig.bin}', scripts and assets into executable...`,
 	);
-	const compileTimeStart = performance.now();
 	const pkgProcess = spawn('cmd', pkgArgs);
 
 	pkgProcess.stdout.on('data', (text) => {
@@ -122,21 +122,18 @@ import type { PkgConfig } from './_types/Pkg';
 	});
 
 	pkgProcess.on('exit', async () => {
-		console.log(
-			picocolors.green(
-				`Done in ${Math.round(performance.now() - compileTimeStart)}ms`,
-			),
+		ora_compiling.succeed(
+			`Compiled '${pkgConfig.bin}', scripts and assets into executable`,
 		);
 
 		const copyMapEntries = Array.from(copyMap.entries()).filter(
 			([filename]) => extname(filename) !== '',
 		);
 		if (copyMapEntries.length > 0) {
-			console.log(
-				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
+			const ora_copying = oraStatus(
+				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`,
 			);
 
-			const copyTimeStart = performance.now();
 			for (const [_, { from, to }] of copyMapEntries) {
 				console.log(`  ${from}\n  > ${to}\n`);
 				if (!existsSync(dirname(to))) {
@@ -145,21 +142,9 @@ import type { PkgConfig } from './_types/Pkg';
 				copyFileSync(from, to);
 			}
 
-			console.log(
-				picocolors.green(
-					`Done in ${Math.round(
-						performance.now() - copyTimeStart,
-					)}ms`,
-				),
+			ora_copying.succeed(
+				`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`,
 			);
 		}
-
-		console.log(
-			picocolors.green(
-				`\nBuild finished in ${Math.round(
-					performance.now() - buildTimeStart,
-				)}ms\n`,
-			),
-		);
 	});
 })();
