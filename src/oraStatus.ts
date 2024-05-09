@@ -1,4 +1,16 @@
 import ora from 'ora-classic';
+import { secToTime } from '@energypatrikhu/node-utils';
+
+function oraTime(time: number) {
+	if (time < 1000) {
+		return `${time}ms`;
+	} else if (time < 60 * 1000) {
+		return secToTime(time, '{ss}s');
+	} else if (time < 60 * 60 * 1000) {
+		return secToTime(time, '{mm}m {ss}s');
+	}
+	return secToTime(time, '{HH}h {mm}m {ss}s');
+}
 
 export default function oraStatus(text: string) {
 	const performanceNow = performance.now();
@@ -7,30 +19,22 @@ export default function oraStatus(text: string) {
 	return {
 		succeed: (text: string) => {
 			spinner.succeed(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
+				`${text} in ${oraTime(performance.now() - performanceNow)}`,
 			);
 		},
 		fail: (text: string) => {
 			spinner.fail(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
+				`${text} in ${oraTime(performance.now() - performanceNow)}`,
 			);
 		},
 		info: (text: string) => {
 			spinner.info(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
+				`${text} in ${oraTime(performance.now() - performanceNow)}`,
 			);
 		},
 		warn: (text: string) => {
 			spinner.warn(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
+				`${text} in ${oraTime(performance.now() - performanceNow)}`,
 			);
 		},
 	};
