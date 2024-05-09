@@ -97,7 +97,7 @@ import type { PkgConfig } from './_types/Pkg';
 	const compileTimeStart = performance.now();
 	const pkgProcess = spawn('cmd', pkgArgs);
 
-	for await (const text of pkgProcess.stdout) {
+	pkgProcess.stdout.on('data', (text) => {
 		const lines: Array<string> = text.toString().split('\n');
 
 		for (const line of lines) {
@@ -119,7 +119,7 @@ import type { PkgConfig } from './_types/Pkg';
 				});
 			}
 		}
-	}
+	});
 
 	pkgProcess.on('exit', async () => {
 		console.log(
