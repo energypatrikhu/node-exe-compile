@@ -39,6 +39,7 @@ try {
 			...Object.keys(packageJson.devDependencies || {}),
 			...Object.keys(packageJson.dependencies || {}),
 		],
+		outExtension: { '.js': '.mjs' },
 	});
 	ora__building.succeed('Built package!');
 } catch {
