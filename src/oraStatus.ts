@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora from 'ora-classic';
 
 export default function oraStatus(text: string) {
 	const performanceNow = performance.now();
