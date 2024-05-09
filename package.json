@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"build": "node esbuild.config.mjs",
-		"np": "np --no-tests"
+		"np": "npm run build && np --no-tests"
 	},
 	"files": [
 		"build"
