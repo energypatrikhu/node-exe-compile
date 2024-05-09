@@ -3,7 +3,7 @@ import { secToTime } from '@energypatrikhu/node-utils';
 
 function oraTime(time: number) {
 	if (time < 1000) {
-		return `${time}ms`;
+		return `${Math.round(time)}ms`;
 	} else if (time < 60 * 1000) {
 		return secToTime(time, '{ss}s');
 	} else if (time < 60 * 60 * 1000) {
