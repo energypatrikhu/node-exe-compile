@@ -68,7 +68,7 @@ import oraStatus from './oraStatus';
 			force: true,
 		});
 	}
-	status_removeOldFiles.succeed("Old files removed from 'pkg' folder.");
+	status_removeOldFiles.succeed("Removed old files from 'pkg' folder");
 
 	// Minify file main file
 	const main = pkgConfig.main || 'src/index.ts';
