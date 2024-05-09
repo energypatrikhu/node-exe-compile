@@ -20,6 +20,9 @@ await build({
 	minify: true,
 	format: 'cjs',
 	external: [
+		...Object.keys(packageJson.optionalDependencies || {}),
+		...Object.keys(packageJson.bundledDependencies || {}),
+		...Object.keys(packageJson.peerDependencies || {}),
 		...Object.keys(packageJson.devDependencies || {}),
 		...Object.keys(packageJson.dependencies || {}),
 	],

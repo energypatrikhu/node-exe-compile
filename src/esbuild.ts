@@ -12,6 +12,12 @@ export default async function minify(entrypoint: string, destination: string) {
 		logLevel: 'debug',
 		minify: true,
 		format: 'cjs',
-		external: Object.keys(packageJson.dependencies || {}),
+		external: [
+			...Object.keys(packageJson.optionalDependencies || {}),
+			...Object.keys(packageJson.bundledDependencies || {}),
+			...Object.keys(packageJson.peerDependencies || {}),
+			...Object.keys(packageJson.devDependencies || {}),
+			...Object.keys(packageJson.dependencies || {}),
+		],
 	});
 }
