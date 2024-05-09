@@ -1,6 +1,6 @@
 {
 	"name": "@energypatrikhu/node-exe-compile",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "A small config based wrapper for @yao-pkg/pkg (fork of vercel's pkg package), using esbuild to minify and bundle the script specified in the config file, then using pkg it compiles to an exe file",
 	"main": "build/index.js",
 	"bin": {
