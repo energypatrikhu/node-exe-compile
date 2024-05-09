@@ -18,6 +18,7 @@ interface PkgConfig {
 	bin: string;
 	pkg: {
 		targets: Array<string>;
+		scripts: Array<string>;
 		assets: Array<string>;
 		outputPath: string;
 		additional: {
@@ -42,6 +43,7 @@ interface PkgConfig {
 		bin: 'build/index.js',
 		pkg: {
 			targets: ['latest'],
+			scripts: [],
 			assets: ['node_modules/**/*.node'],
 			outputPath: 'pkg',
 			additional: {
