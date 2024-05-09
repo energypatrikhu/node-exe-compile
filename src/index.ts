@@ -128,20 +128,21 @@ import type { PkgConfig } from './_types/Pkg';
 			),
 		);
 
-		if (copyMap.size > 0) {
+		const copyMapEntries = Array.from(copyMap.entries()).filter(
+			([filename]) => extname(filename) !== '',
+		);
+		if (copyMapEntries.length > 0) {
 			console.log(
 				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
 			);
 
 			const copyTimeStart = performance.now();
-			for (const [filename, { from, to }] of copyMap) {
-				if (extname(filename) !== '') {
-					console.log(`  ${from}\n  > ${to}\n`);
-					if (!existsSync(dirname(to))) {
-						mkdirSync(dirname(to), { recursive: true });
-					}
-					copyFileSync(from, to);
+			for (const [_, { from, to }] of copyMapEntries) {
+				console.log(`  ${from}\n  > ${to}\n`);
+				if (!existsSync(dirname(to))) {
+					mkdirSync(dirname(to), { recursive: true });
 				}
+				copyFileSync(from, to);
 			}
 
 			console.log(
