@@ -11,21 +11,7 @@ import {
 import { spawn } from 'node:child_process';
 import esbuildMinify from './esbuild';
 import picocolors from 'picocolors';
-
-interface PkgConfig {
-	name: string;
-	main: string;
-	bin: string;
-	pkg: {
-		targets: Array<string>;
-		scripts: Array<string>;
-		assets: Array<string>;
-		outputPath: string;
-		additional: {
-			[key: string]: string | Array<string>;
-		};
-	};
-}
+import type { PkgConfig } from './_types/Pkg';
 
 (async () => {
 	const buildTimeStart = performance.now();
@@ -92,9 +78,8 @@ interface PkgConfig {
 	await esbuildMinify(main, binPath);
 
 	// Compile executable
-	const additional = pkgConfig.pkg.additional || {
-		compress: 'brotli',
-	};
+	const additional =
+		pkgConfig.pkg.additional || pkgConfigDefaultEntries.pkg.additional;
 
 	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
 
