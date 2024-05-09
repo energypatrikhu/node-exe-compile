@@ -94,6 +94,7 @@ import type { PkgConfig } from './_types/Pkg';
 	console.log(
 		`\nCompiling '${pkgConfig.bin}', scripts and assets into executable...\n`,
 	);
+	const compileTimeStart = performance.now();
 	const pkgProcess = spawn('cmd', pkgArgs);
 
 	for await (const text of pkgProcess.stdout) {
@@ -121,6 +122,12 @@ import type { PkgConfig } from './_types/Pkg';
 	}
 
 	pkgProcess.on('exit', async () => {
+		console.log(
+			picocolors.green(
+				`Done in ${Math.round(performance.now() - compileTimeStart)}ms`,
+			),
+		);
+
 		if (copyMap.size > 0) {
 			console.log(
 				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
