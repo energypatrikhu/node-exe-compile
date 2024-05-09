@@ -51,14 +51,14 @@ interface PkgConfig {
 	};
 
 	if (!existsSync(configFile)) {
-		console.log('pkg.config.json not found. Creating one...');
+		console.log(`'pkg.config.json' not found. Creating it...`);
 		writeFileSync(
 			configFile,
 			JSON.stringify(pkgConfigDefaultEntries, null, '\t'),
 			'utf-8',
 		);
 		console.log(
-			'pkg.config.json created. Please fill in the required fields.',
+			`'pkg.config.json' created. Please fill in the required fields.`,
 		);
 
 		process.exit(0);
@@ -72,8 +72,8 @@ interface PkgConfig {
 		mkdirSync(pkgConfig.pkg.outputPath, { recursive: true });
 	}
 
-	// Remove old files
-	console.log('Removing old files...\n');
+	// Remove old files from pkg folder
+	console.log(`Removing old files from 'pkg' folder...\n`);
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
 	for (const file of pkgFolderContents) {
 		rmSync(join(pkgConfig.pkg.outputPath, file), {
@@ -82,10 +82,10 @@ interface PkgConfig {
 		});
 	}
 
-	// Minify files
-	console.log('Minifying files...');
+	// Minify file main file
 	const main = pkgConfig.main || 'src/index.ts';
 	const bin = pkgConfig.bin || 'build/index.js';
+	console.log(`Minifying '${main}' into '${bin}'...`);
 	const binPath = dirname(bin);
 	await minify(main, binPath);
 
@@ -104,7 +104,9 @@ interface PkgConfig {
 		pkgArgs.push(`--${optionKey}`, optionValue);
 	}
 
-	console.log('\nCompiling executable...\n');
+	console.log(
+		`\nCompiling '${pkgConfig.bin}', scripts and assets into executable...\n`,
+	);
 	const pkgProcess = spawn('cmd', pkgArgs);
 
 	for await (const text of pkgProcess.stdout) {
@@ -132,24 +134,30 @@ interface PkgConfig {
 	}
 
 	pkgProcess.on('exit', async () => {
-		console.log(
-			`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
-		);
-		const copyTimeStart = performance.now();
-		for (const [filename, { from, to }] of copyMap) {
-			if (extname(filename) !== '') {
-				console.log(`  ${from}\n  > ${to}\n`);
-				if (!existsSync(dirname(to))) {
-					mkdirSync(dirname(to), { recursive: true });
+		if (copyMap.size > 0) {
+			console.log(
+				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...\n`,
+			);
+
+			const copyTimeStart = performance.now();
+			for (const [filename, { from, to }] of copyMap) {
+				if (extname(filename) !== '') {
+					console.log(`  ${from}\n  > ${to}\n`);
+					if (!existsSync(dirname(to))) {
+						mkdirSync(dirname(to), { recursive: true });
+					}
+					copyFileSync(from, to);
 				}
-				copyFileSync(from, to);
 			}
+
+			console.log(
+				picocolors.green(
+					`Done in ${Math.round(
+						performance.now() - copyTimeStart,
+					)}ms`,
+				),
+			);
 		}
-		console.log(
-			picocolors.green(
-				`Done in ${Math.round(performance.now() - copyTimeStart)}ms`,
-			),
-		);
 
 		console.log(
 			picocolors.green(
