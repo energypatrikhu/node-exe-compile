@@ -31,7 +31,7 @@ try {
 		outfile: __destinationFile,
 		logLevel: 'silent',
 		minify: true,
-		format: 'esm',
+		format: 'cjs',
 		external: [
 			...Object.keys(packageJson.optionalDependencies || {}),
 			...Object.keys(packageJson.bundledDependencies || {}),
@@ -39,7 +39,6 @@ try {
 			...Object.keys(packageJson.devDependencies || {}),
 			...Object.keys(packageJson.dependencies || {}),
 		],
-		outExtension: { '.js': '.mjs' },
 	});
 	ora__building.succeed('Built package!');
 } catch {
