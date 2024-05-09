@@ -25,14 +25,13 @@
 	"author": "EnergyPatrikHU",
 	"devDependencies": {
 		"@types/node": "^20.12.11",
-		"@types/ora": "^3.2.0",
 		"np": "^10.0.5",
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
 		"@yao-pkg/pkg": "^5.11.5",
 		"esbuild": "^0.21.1",
-		"ora": "^8.0.1"
+		"ora-classic": "^5.4.2"
 	},
 	"repository": {
 		"type": "git",
