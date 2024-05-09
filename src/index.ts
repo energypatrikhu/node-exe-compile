@@ -9,7 +9,7 @@ import {
 	writeFileSync,
 } from 'node:fs';
 import { spawn } from 'node:child_process';
-import { minify } from './esbuild';
+import minify from './esbuild';
 import picocolors from 'picocolors';
 
 interface PkgConfig {
