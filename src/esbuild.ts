@@ -9,12 +9,13 @@ export default async function esbuildMinify(
 
 	await build({
 		entryPoints: [entrypoint],
-		bundle: true,
 		platform: 'node',
-		outdir: destination,
-		logLevel: 'silent',
+		bundle: true,
+		logLevel: 'warning',
+		treeShaking: true,
 		minify: true,
 		format: 'cjs',
+		outdir: destination,
 		external: ((): string[] => {
 			const dependencies = new Set<string>();
 			for (const key in packageJson) {

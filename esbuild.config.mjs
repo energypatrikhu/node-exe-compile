@@ -43,7 +43,7 @@ try {
 		platform: 'node',
 		bundle: true,
 		outfile: __destinationFile,
-		logLevel: 'silent',
+		logLevel: 'warning',
 		treeShaking: true,
 		minify: true,
 		format: 'cjs',
