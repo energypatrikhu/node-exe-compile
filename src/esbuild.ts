@@ -15,12 +15,16 @@ export default async function esbuildMinify(
 		logLevel: 'silent',
 		minify: true,
 		format: 'cjs',
-		external: [
-			...Object.keys(packageJson.optionalDependencies || {}),
-			...Object.keys(packageJson.bundledDependencies || {}),
-			...Object.keys(packageJson.peerDependencies || {}),
-			...Object.keys(packageJson.devDependencies || {}),
-			...Object.keys(packageJson.dependencies || {}),
-		],
+		external: ((): string[] => {
+			const dependencies = new Set<string>();
+			for (const key in packageJson) {
+				if (key.toLowerCase().endsWith('dependencies')) {
+					for (const dep in packageJson[key]) {
+						dependencies.add(dep);
+					}
+				}
+			}
+			return [...dependencies.values()];
+		})(),
 	});
 }
