@@ -31,7 +31,7 @@
 	"dependencies": {
 		"@energypatrikhu/node-utils": "^0.1.8",
 		"@yao-pkg/pkg": "^5.11.5",
-		"esbuild": "^0.21.1",
+		"esbuild": "^0.21.2",
 		"ora-classic": "^5.4.2"
 	},
 	"repository": {
