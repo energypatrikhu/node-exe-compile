@@ -53,6 +53,25 @@ import oraStatus from './oraStatus';
 	const pkgConfigRaw = readFileSync(configFile, 'utf-8');
 	const pkgConfig: PkgConfig = JSON.parse(pkgConfigRaw);
 
+	const missingFields = [];
+	for (const field of ['name', 'main', 'bin', 'pkg']) {
+		if (!(field in pkgConfig)) {
+			missingFields.push(field);
+		}
+	}
+	for (const field of ['targets', 'outputPath']) {
+		if (!(field in pkgConfig.pkg)) {
+			missingFields.push(`pkg.${field}`);
+		}
+	}
+	if (missingFields.length > 0) {
+		throw new Error(
+			`'pkg.config.json' is missing required fields: ${missingFields.join(
+				', ',
+			)}. Please fill them in.`,
+		);
+	}
+
 	if (!existsSync(pkgConfig.pkg.outputPath)) {
 		mkdirSync(pkgConfig.pkg.outputPath, { recursive: true });
 	}
@@ -71,8 +90,8 @@ import oraStatus from './oraStatus';
 	status_removeOldFiles.succeed("Removed old files from 'pkg' folder");
 
 	// Minify file main file
-	const main = pkgConfig.main || 'src/index.ts';
-	const bin = pkgConfig.bin || 'build/index.js';
+	const main = 'main' in pkgConfig ? pkgConfig.main : 'src/index.ts';
+	const bin = 'bin' in pkgConfig ? pkgConfig.bin : 'build/index.js';
 	const binPath = dirname(bin);
 	const status_minifying = oraStatus(`Minifying '${main}' into '${bin}'...`);
 	await esbuildMinify(main, binPath);
@@ -80,7 +99,9 @@ import oraStatus from './oraStatus';
 
 	// Compile executable
 	const additional =
-		pkgConfig.pkg.additional || pkgConfigDefaultEntries.pkg.additional;
+		'additional' in pkgConfig.pkg
+			? pkgConfig.pkg.additional
+			: pkgConfigDefaultEntries.pkg.additional;
 
 	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
 
