@@ -90,12 +90,14 @@ import oraStatus from './oraStatus';
 	status_removeOldFiles.succeed("Removed old files from 'pkg' folder");
 
 	// Minify file main file
-	const main = 'main' in pkgConfig ? pkgConfig.main : 'src/index.ts';
-	const bin = 'bin' in pkgConfig ? pkgConfig.bin : 'build/index.js';
-	const binPath = dirname(bin);
-	const status_minifying = oraStatus(`Minifying '${main}' into '${bin}'...`);
-	await esbuildMinify(main, binPath);
-	status_minifying.succeed(`Minified '${main}' into '${bin}'`);
+	const binPath = dirname(pkgConfig.bin);
+	const status_minifying = oraStatus(
+		`Minifying '${pkgConfig.main}' into '${pkgConfig.bin}'...`,
+	);
+	await esbuildMinify(pkgConfig.main, binPath);
+	status_minifying.succeed(
+		`Minified '${pkgConfig.main}' into '${pkgConfig.bin}'`,
+	);
 
 	// Compile executable
 	const additional =
