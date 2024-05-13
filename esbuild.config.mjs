@@ -25,14 +25,14 @@ const __sourceFile = './src/index.ts';
 const __destinationFile = './build/index.js';
 const prefix = '#! /usr/bin/env node';
 
-const ora__removeOldFiles = oraStatus('Removing old files...');
+const ora__removeOldFiles = oraStatus('Removing old file...');
 try {
 	if (existsSync(__destinationFile)) {
 		rmSync(__destinationFile, { force: true, recursive: true });
 	}
-	ora__removeOldFiles.succeed('Removed old files');
+	ora__removeOldFiles.succeed('Removed old file');
 } catch {
-	ora__removeOldFiles.fail('Failed to remove old files');
+	ora__removeOldFiles.fail('Failed to remove old file');
 }
 
 const ora__building = oraStatus('Building package...');
@@ -47,13 +47,17 @@ try {
 		treeShaking: true,
 		minify: true,
 		format: 'cjs',
-		external: [
-			...Object.keys(packageJson.optionalDependencies || {}),
-			...Object.keys(packageJson.bundledDependencies || {}),
-			...Object.keys(packageJson.peerDependencies || {}),
-			...Object.keys(packageJson.devDependencies || {}),
-			...Object.keys(packageJson.dependencies || {}),
-		],
+		external: (() => {
+			const dependencies = new Set();
+			for (const key in packageJson) {
+				if (key.toLowerCase().endsWith('dependencies')) {
+					for (const dep in packageJson[key]) {
+						dependencies.add(dep);
+					}
+				}
+			}
+			return [...dependencies.values()];
+		})(),
 	});
 	ora__building.succeed('Built package');
 } catch {
