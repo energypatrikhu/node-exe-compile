@@ -9,11 +9,7 @@ function oraStatus(text) {
 
 	return {
 		succeed: (text) => {
-			spinner.succeed(
-				`${text} in ${Math.round(
-					performance.now() - performanceNow,
-				)}ms`,
-			);
+			spinner.succeed(`${text} in ${Math.round(performance.now() - performanceNow)}ms`);
 		},
 		fail: (text) => {
 			spinner.fail(text);
@@ -66,11 +62,7 @@ try {
 
 const ora__addingShebang = oraStatus('Adding shebang...');
 try {
-	writeFileSync(
-		__destinationFile,
-		prefix + EOL + readFileSync(__destinationFile, 'utf-8'),
-		'utf-8',
-	);
+	writeFileSync(__destinationFile, prefix + EOL + readFileSync(__destinationFile, 'utf-8'), 'utf-8');
 	ora__addingShebang.succeed('Added shebang');
 } catch {
 	ora__addingShebang.fail('Failed to add shebang');

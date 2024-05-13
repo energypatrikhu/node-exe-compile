@@ -20,17 +20,13 @@ export default function oraStatus(text: string) {
 
 	return {
 		succeed: (text: string) => {
-			spinner.succeed(
-				`${text} in ${oraTime(performance.now() - performanceNow)}`,
-			);
+			spinner.succeed(`${text} in ${oraTime(performance.now() - performanceNow)}`);
 		},
 		fail: (text: string) => {
 			spinner.fail(text);
 		},
 		info: (text: string) => {
-			spinner.info(
-				`${text} in ${oraTime(performance.now() - performanceNow)}`,
-			);
+			spinner.info(`${text} in ${oraTime(performance.now() - performanceNow)}`);
 		},
 		warn: (text: string) => {
 			spinner.warn(text);

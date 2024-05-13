@@ -1,13 +1,5 @@
 import { basename, dirname, extname, join } from 'node:path';
-import {
-	copyFileSync,
-	existsSync,
-	mkdirSync,
-	readFileSync,
-	readdirSync,
-	rmSync,
-	writeFileSync,
-} from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { spawn } from 'node:child_process';
 import esbuildMinify from './esbuild';
 import type { PkgConfig } from './_types/Pkg';
@@ -38,14 +30,8 @@ import oraStatus from './oraStatus';
 
 	if (!existsSync(configFile)) {
 		console.log(`'pkg.config.json' not found. Creating it...`);
-		writeFileSync(
-			configFile,
-			JSON.stringify(pkgConfigDefaultEntries, null, '\t'),
-			'utf-8',
-		);
-		console.log(
-			`'pkg.config.json' created. Please fill in the required fields.`,
-		);
+		writeFileSync(configFile, JSON.stringify(pkgConfigDefaultEntries, null, '\t'), 'utf-8');
+		console.log(`'pkg.config.json' created. Please fill in the required fields.`);
 
 		process.exit(0);
 	}
@@ -65,11 +51,7 @@ import oraStatus from './oraStatus';
 		}
 	}
 	if (missingFields.length > 0) {
-		throw new Error(
-			`'pkg.config.json' is missing required fields: ${missingFields.join(
-				', ',
-			)}. Please fill them in.`,
-		);
+		throw new Error(`'pkg.config.json' is missing required fields: ${missingFields.join(', ')}. Please fill them in.`);
 	}
 
 	if (!existsSync(pkgConfig.pkg.outputPath)) {
@@ -77,9 +59,7 @@ import oraStatus from './oraStatus';
 	}
 
 	// Remove old files from pkg folder
-	const status_removeOldFiles = oraStatus(
-		"Removing old files from 'pkg' folder...",
-	);
+	const status_removeOldFiles = oraStatus("Removing old files from 'pkg' folder...");
 	const pkgFolderContents = readdirSync(pkgConfig.pkg.outputPath);
 	for (const file of pkgFolderContents) {
 		rmSync(join(pkgConfig.pkg.outputPath, file), {
@@ -91,19 +71,12 @@ import oraStatus from './oraStatus';
 
 	// Minify file main file
 	const binPath = dirname(pkgConfig.bin);
-	const status_minifying = oraStatus(
-		`Minifying '${pkgConfig.main}' into '${pkgConfig.bin}'...`,
-	);
+	const status_minifying = oraStatus(`Minifying '${pkgConfig.main}' into '${pkgConfig.bin}'...`);
 	await esbuildMinify(pkgConfig.main, binPath);
-	status_minifying.succeed(
-		`Minified '${pkgConfig.main}' into '${pkgConfig.bin}'`,
-	);
+	status_minifying.succeed(`Minified '${pkgConfig.main}' into '${pkgConfig.bin}'`);
 
 	// Compile executable
-	const additional =
-		'additional' in pkgConfig.pkg
-			? pkgConfig.pkg.additional
-			: pkgConfigDefaultEntries.pkg.additional;
+	const additional = 'additional' in pkgConfig.pkg ? pkgConfig.pkg.additional : pkgConfigDefaultEntries.pkg.additional;
 
 	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
 
@@ -115,9 +88,7 @@ import oraStatus from './oraStatus';
 		pkgArgs.push(`--${optionKey}`, optionValue);
 	}
 
-	const status_compiling = oraStatus(
-		`Compiling '${pkgConfig.bin}', scripts and assets into executable...`,
-	);
+	const status_compiling = oraStatus(`Compiling '${pkgConfig.bin}', scripts and assets into executable...`);
 	const pkgProcess = spawn('cmd', pkgArgs);
 
 	pkgProcess.stdout.on('data', (text) => {
@@ -125,16 +96,11 @@ import oraStatus from './oraStatus';
 
 		for (const line of lines) {
 			if (line.match(pathFromRegex)) {
-				const from = line
-					.replace(pathFromRegex, '')
-					.replace(/\\/g, '\\\\')
-					.trim();
+				const from = line.replace(pathFromRegex, '').replace(/\\/g, '\\\\').trim();
 
 				copyMap.set(basename(from), { from, to: '' });
 			} else if (line.match(pathToRegex)) {
-				const to =
-					pkgConfig.pkg.outputPath +
-					line.replace(pathToRegex, '').replace(/\//g, '\\\\').trim();
+				const to = pkgConfig.pkg.outputPath + line.replace(pathToRegex, '').replace(/\//g, '\\\\').trim();
 
 				copyMap.set(basename(to), {
 					from: copyMap.get(basename(to))?.from || '',
@@ -145,17 +111,11 @@ import oraStatus from './oraStatus';
 	});
 
 	pkgProcess.on('exit', async () => {
-		status_compiling.succeed(
-			`Compiled '${pkgConfig.bin}', scripts and assets into executable`,
-		);
+		status_compiling.succeed(`Compiled '${pkgConfig.bin}', scripts and assets into executable`);
 
-		const copyMapEntries = Array.from(copyMap.entries()).filter(
-			([filename]) => extname(filename) !== '',
-		);
+		const copyMapEntries = Array.from(copyMap.entries()).filter(([filename]) => extname(filename) !== '');
 		if (copyMapEntries.length > 0) {
-			const status_copying = oraStatus(
-				`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`,
-			);
+			const status_copying = oraStatus(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
 
 			for (const [_, { from, to }] of copyMapEntries) {
 				console.log(`  ${from}\n  > ${to}\n`);
@@ -165,9 +125,7 @@ import oraStatus from './oraStatus';
 				copyFileSync(from, to);
 			}
 
-			status_copying.succeed(
-				`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`,
-			);
+			status_copying.succeed(`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`);
 		}
 	});
 })();
