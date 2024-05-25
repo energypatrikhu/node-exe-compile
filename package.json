@@ -24,14 +24,14 @@
 	],
 	"author": "EnergyPatrikHU",
 	"devDependencies": {
-		"@types/node": "^20.12.11",
+		"@types/node": "^20.12.12",
 		"np": "^10.0.5",
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
-		"@energypatrikhu/node-utils": "^0.1.8",
+		"@energypatrikhu/node-utils": "^0.1.9",
 		"@yao-pkg/pkg": "^5.11.5",
-		"esbuild": "^0.21.2",
+		"esbuild": "^0.21.4",
 		"ora-classic": "^5.4.2"
 	},
 	"repository": {
