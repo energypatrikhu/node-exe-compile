@@ -12,5 +12,6 @@ export interface PkgConfig {
 	name: string;
 	main: string;
 	bin: string;
+	autoCopy: boolean;
 	pkg: Pkg;
 }

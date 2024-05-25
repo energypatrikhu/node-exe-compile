@@ -17,6 +17,7 @@ import oraStatus from './oraStatus';
 		name: 'name',
 		main: 'src/index.ts',
 		bin: 'build/index.js',
+		autoCopy: true,
 		pkg: {
 			targets: ['latest'],
 			scripts: [],
@@ -78,6 +79,8 @@ import oraStatus from './oraStatus';
 	// Compile executable
 	const additional = 'additional' in pkgConfig.pkg ? pkgConfig.pkg.additional : pkgConfigDefaultEntries.pkg.additional;
 
+	const autoCopy = pkgConfig.autoCopy;
+
 	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
 
 	for (let [optionKey, optionValue] of Object.entries(additional)) {
@@ -91,41 +94,45 @@ import oraStatus from './oraStatus';
 	const status_compiling = oraStatus(`Compiling '${pkgConfig.bin}', scripts and assets into executable...`);
 	const pkgProcess = spawn('cmd', pkgArgs);
 
-	pkgProcess.stdout.on('data', (text) => {
-		const lines: Array<string> = text.toString().split('\n');
+	if (autoCopy) {
+		pkgProcess.stdout.on('data', (text) => {
+			const lines: Array<string> = text.toString().split('\n');
 
-		for (const line of lines) {
-			if (line.match(pathFromRegex)) {
-				const from = line.replace(pathFromRegex, '').replace(/\\/g, '\\\\').trim();
+			for (const line of lines) {
+				if (line.match(pathFromRegex)) {
+					const from = line.replace(pathFromRegex, '').replace(/\\/g, '\\\\').trim();
 
-				copyMap.set(basename(from), { from, to: '' });
-			} else if (line.match(pathToRegex)) {
-				const to = pkgConfig.pkg.outputPath + line.replace(pathToRegex, '').replace(/\//g, '\\\\').trim();
+					copyMap.set(basename(from), { from, to: '' });
+				} else if (line.match(pathToRegex)) {
+					const to = pkgConfig.pkg.outputPath + line.replace(pathToRegex, '').replace(/\//g, '\\\\').trim();
 
-				copyMap.set(basename(to), {
-					from: copyMap.get(basename(to))?.from || '',
-					to,
-				});
+					copyMap.set(basename(to), {
+						from: copyMap.get(basename(to))?.from || '',
+						to,
+					});
+				}
 			}
-		}
-	});
+		});
+	}
 
 	pkgProcess.on('exit', async () => {
 		status_compiling.succeed(`Compiled '${pkgConfig.bin}', scripts and assets into executable`);
 
-		const copyMapEntries = Array.from(copyMap.entries()).filter(([filename]) => extname(filename) !== '');
-		if (copyMapEntries.length > 0) {
-			const status_copying = oraStatus(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
+		if (autoCopy) {
+			const copyMapEntries = Array.from(copyMap.entries()).filter(([filename]) => extname(filename) !== '');
+			if (copyMapEntries.length > 0) {
+				const status_copying = oraStatus(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
 
-			for (const [_, { from, to }] of copyMapEntries) {
-				// console.log(`  ${from}\n  > ${to}\n`);
-				if (!existsSync(dirname(to))) {
-					mkdirSync(dirname(to), { recursive: true });
+				for (const [_, { from, to }] of copyMapEntries) {
+					// console.log(`  ${from}\n  > ${to}\n`);
+					if (!existsSync(dirname(to))) {
+						mkdirSync(dirname(to), { recursive: true });
+					}
+					copyFileSync(from, to);
 				}
-				copyFileSync(from, to);
-			}
 
-			status_copying.succeed(`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`);
+				status_copying.succeed(`Copied needed files into '${pkgConfig.pkg.outputPath}' directory`);
+			}
 		}
 	});
 })();

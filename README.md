@@ -39,6 +39,7 @@ The generated configuration file is almost identical to the default configuratio
 - `name`: the name of the file after compiling
 - `main`: this is the location of the main file, commonly `src/index.[ts,js]`
 - `bin`: the path to the minified and bundled script (this most of the times does not need to be changed)
+- `autoCopy`: this is a boolean value, if set to `true` it will copy the needed files to the output directory
 - `pkg`: pkg options
   - `targets`: NodeJS version (latest == node20)
   - `assets`: when using packages that has `.node` extension the value has to be set, otherwise it may fail to start
