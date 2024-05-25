@@ -79,7 +79,7 @@ import oraStatus from './oraStatus';
 	// Compile executable
 	const additional = 'additional' in pkgConfig.pkg ? pkgConfig.pkg.additional : pkgConfigDefaultEntries.pkg.additional;
 
-	const autoCopy = pkgConfig.autoCopy;
+	const autoCopy = 'autoCopy' in pkgConfig ? pkgConfig.autoCopy : pkgConfigDefaultEntries.autoCopy;
 
 	const pkgArgs = ['/r', join('node_modules', '.bin', 'pkg'), configFile];
 
