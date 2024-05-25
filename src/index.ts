@@ -118,7 +118,7 @@ import oraStatus from './oraStatus';
 			const status_copying = oraStatus(`Copying needed files into '${pkgConfig.pkg.outputPath}' directory...`);
 
 			for (const [_, { from, to }] of copyMapEntries) {
-				console.log(`  ${from}\n  > ${to}\n`);
+				// console.log(`  ${from}\n  > ${to}\n`);
 				if (!existsSync(dirname(to))) {
 					mkdirSync(dirname(to), { recursive: true });
 				}
