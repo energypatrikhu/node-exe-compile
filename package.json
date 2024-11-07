@@ -1,49 +1,49 @@
 {
-	"name": "@energypatrikhu/node-exe-compile",
-	"version": "0.0.17",
-	"description": "A small config based wrapper for @yao-pkg/pkg (fork of vercel's pkg package), using esbuild to minify and bundle the script specified in the config file, then using pkg it compiles to an exe file",
-	"main": "build/index.js",
-	"bin": {
-		"node-exe-compile": "build/index.js"
-	},
-	"scripts": {
-		"build": "node esbuild.config.mjs",
-		"np": "npm run build && np --no-tests"
-	},
-	"files": [
-		"build"
-	],
-	"keywords": [
-		"nodejs",
-		"windows",
-		"wrapper",
-		"compiler",
-		"executable",
-		"pkg",
-		"esbuild"
-	],
-	"author": "EnergyPatrikHU",
-	"devDependencies": {
-		"@types/node": "^20.12.12",
-		"np": "^10.0.5",
-		"typescript": "^5.4.5"
-	},
-	"dependencies": {
-		"@energypatrikhu/node-utils": "^0.1.9",
-		"@yao-pkg/pkg": "^5.11.5",
-		"esbuild": "^0.21.4",
-		"ora-classic": "^5.4.2"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/energypatrikhu/node-exe-compile.git"
-	},
-	"bugs": {
-		"url": "https://github.com/energypatrikhu/node-exe-compile/issues"
-	},
-	"homepage": "https://github.com/energypatrikhu/node-exe-compile",
-	"license": "MIT",
-	"publishConfig": {
-		"access": "public"
-	}
+  "name": "@energypatrikhu/node-exe-compile",
+  "version": "0.0.17",
+  "description": "A small config based wrapper for @yao-pkg/pkg (fork of vercel's pkg package), using esbuild to minify and bundle the script specified in the config file, then using pkg it compiles to an exe file",
+  "main": "build/index.js",
+  "bin": {
+    "node-exe-compile": "build/index.js"
+  },
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "np": "npm run build && np --no-tests"
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [
+    "nodejs",
+    "windows",
+    "wrapper",
+    "compiler",
+    "executable",
+    "pkg",
+    "esbuild"
+  ],
+  "author": "EnergyPatrikHU",
+  "devDependencies": {
+    "@types/node": "22.9.0",
+    "np": "10.0.7",
+    "typescript": "5.6.3"
+  },
+  "dependencies": {
+    "@energypatrikhu/node-utils": "0.2.1",
+    "@yao-pkg/pkg": "6.1.0",
+    "esbuild": "0.24.0",
+    "ora-classic": "5.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energypatrikhu/node-exe-compile.git"
+  },
+  "bugs": {
+    "url": "https://github.com/energypatrikhu/node-exe-compile/issues"
+  },
+  "homepage": "https://github.com/energypatrikhu/node-exe-compile",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }
