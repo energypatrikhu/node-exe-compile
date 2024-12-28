@@ -1,6 +1,6 @@
 import { build } from 'esbuild';
-import { existsSync, rmSync, readFileSync, writeFileSync } from 'node:fs';
-import { EOL } from 'node:os';
+import { existsSync, rmSync, readFileSync, writeFileSync } from 'fs';
+import { EOL } from 'os';
 import ora from 'ora-classic';
 
 function oraStatus(text) {
