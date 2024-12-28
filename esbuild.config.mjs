@@ -33,7 +33,7 @@ try {
 
 const ora__building = oraStatus('Building package...');
 try {
-	const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'));
+	// const packageJson = JSON.parse(readFileSync('./package.json', 'utf-8'));
 	await build({
 		entryPoints: [__sourceFile],
 		platform: 'node',
@@ -43,17 +43,18 @@ try {
 		treeShaking: true,
 		minify: true,
 		format: 'cjs',
-		external: (() => {
-			const dependencies = new Set();
-			for (const key in packageJson) {
-				if (key.toLowerCase().endsWith('dependencies')) {
-					for (const dep in packageJson[key]) {
-						dependencies.add(dep);
-					}
-				}
-			}
-			return [...dependencies.values()];
-		})(),
+		// external: (() => {
+		// 	const dependencies = new Set();
+		// 	for (const key in packageJson) {
+		// 		if (key.toLowerCase().endsWith('dependencies')) {
+		// 			for (const dep in packageJson[key]) {
+		// 				dependencies.add(dep);
+		// 			}
+		// 		}
+		// 	}
+		// 	return [...dependencies.values()];
+		// })(),
+		packages: 'external',
 	});
 	ora__building.succeed('Built package');
 } catch {
