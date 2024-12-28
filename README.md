@@ -41,7 +41,7 @@ The generated configuration file is almost identical to the default configuratio
 - `bin`: the path to the minified and bundled script (this most of the times does not need to be changed)
 - `autoCopy`: this is a boolean value, if set to `true` it will copy the needed files to the output directory
 - `pkg`: pkg options
-  - `targets`: NodeJS version (latest == node20)
+  - `targets`: NodeJS version
   - `assets`: when using packages that has `.node` extension the value has to be set, otherwise it may fail to start
   - `outputPath`: the path where the executable will be built
   - `additional`: this contains the additional settings for `pkg`
